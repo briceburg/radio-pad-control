@@ -2,7 +2,7 @@ const stationGrid = document.getElementById('station-grid');
 const nowPlaying = document.getElementById('now-playing');
 
 const stationsUrl = 'https://raw.githubusercontent.com/briceburg/radio-pad/refs/heads/main/src/stations.json';
-const playerUrl = 'https://radio-pad-control-2609704817.us-central1.run.app/?station=';
+const broadcastUrl = 'https://radio-pad-v0-broadcast-2609704817.us-central1.run.app/?station=';
 
 async function loadStations() {
   try {
@@ -40,7 +40,7 @@ async function loadStations() {
 
 function playStation(stationName) {
   nowPlaying.innerText = stationName;
-  fetch(`${playerUrl}${stationName}`)
+  fetch(`${broadcastUrl}${stationName}`)
     .then(response => {
       if (!response.ok) {
         console.error(`Error: Received status ${response.status} from player API`);

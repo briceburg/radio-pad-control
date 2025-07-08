@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -eo pipefail
+PROJECT_ROOT="$(dirname "$(realpath "$0")")/../runfn"
+
+function_names=()
+for dir in "$PROJECT_ROOT"/*/; do
+    function_names+=( "$(basename "$dir")" )
+done
+
+[ -n "$1" ] || {
+    echo "Usage: $0 <function_name>"
+    echo "Available functions: ${function_names[*]}"
+    exit 1
+}
+
+cd "$PROJECT_ROOT/$1"
+[ -x "bin/deploy" ] || {
+    echo "missing executable deploy script: $PWD/bin/deploy"
+    exit 1
+}
+
+exec ./bin/deploy "$@"

@@ -5,9 +5,12 @@ Remotely control [radio-pad](https://github.com/briceburg/radio-pad) through a s
 ## Overview
 
 * [redis](https://redis.io/) pub/sub is used as an event-driven communication bus.
-  * radio-pad-control (mobile or web) publishes requested stations to the "now playing" channel by calling a google cloud run function.
-  * the radio-pad script listens (subscribes) to the "now-playing" channel and plays the requested station on changes.
-* [capacitor](https://capacitorjs.com) along with [ionic framework](https://ionicframework.com/) v8 are used to build native mobile apps from the web source. VanillaJS is used instead of react/angular. this is a KISS project.
+  * remote controls (aka radio-pad-control mobile or web clients) publish requested stations to the "station-request" channel by calling the [broadcast](./runfn/broadcast/) function.
+  * the [radio-pad](https://github.com/briceburg/radio-pad) script listens (subscribes) to the "station-request" channel and attempts to play the requested station.
+  * upon successful station changes, radio-pad will broadcast the currently playing station to the "station-playing" channel.
+  * remote controls listen to the "station-playing" channel over websockets connected to the the [switchboard](./runfn/switchboard/) function, and update their UI on changes.
+* [capacitor](https://capacitorjs.com) and [ionic framework](https://ionicframework.com/) v8 support native mobile app building from a common the web source.
+  * VanillaJS is used instead of react/angular. this is a KISS project.
 
 ## Usage
 
