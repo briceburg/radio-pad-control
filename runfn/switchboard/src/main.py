@@ -9,7 +9,7 @@ def resp(message, status=200):
 
 
 @functions_framework.http
-def play(request: flask.Request) -> flask.typing.ResponseReturnValue:
+def runfn(request: flask.Request) -> flask.typing.ResponseReturnValue:
     request_args = request.args
     if "station" in request_args:
         try:

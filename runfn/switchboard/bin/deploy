@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -eo pipefail
+PROJECT_ROOT="$(dirname "$(realpath "$0")")/.."
+
+RUNFN_NAME="${RUNFN_NAME:-radio-pad-v0-switchboard}"
+RUNFN_REGION="${RUNFN_REGION:-us-central1}"
+
+echo "Deploying function $RUNFN_NAME to $RUNFN_REGION" >&2
+gcloud run deploy "$RUNFN_NAME" \
+  --region="$RUNFN_REGION" \
+  --source="$PROJECT_ROOT/src" \
+  --base-image=google-22/python313 \
+  --function=runfn \
+  --allow-unauthenticated \
+  --set-secrets=REDIS_URL=redis-url-radio-pad-v0:latest \
+  --timeout=5m \
+  --concurrency=1 \
+  --max-instances=1 \
+  --memory=128Mi \
+  --cpu=0.5
