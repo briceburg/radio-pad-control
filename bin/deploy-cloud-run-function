@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -eo pipefail
+PROJECT_ROOT="$(dirname "$(realpath "$0")")/.."
+
+gcloud run deploy radio-pad-control \
+  --region=us-central1 \
+  --source="$PROJECT_ROOT/src/google-cloud-run-function" \
+  --base-image=google-22/python313 \
+  --function=play \
+  --allow-unauthenticated \
+  --set-secrets=REDIS_URL=redis-url-radio-pad-v0:latest \
+  --timeout=4s \
+  --concurrency=1 \
+  --max-instances=1 \
+  --memory=128Mi \
+  --cpu=0.5
